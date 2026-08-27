@@ -1,0 +1,367 @@
+/* ============================================
+   Song Finder — Spectrogram Theme
+   ============================================ */
+
+:root {
+  --bg: #0B0F1A;
+  --bg-elevated: #121729;
+  --cyan: #00D9FF;
+  --magenta: #FF3D8A;
+  --text-primary: #EAF0FF;
+  --text-muted: #8B93A7;
+  --border: rgba(234, 240, 255, 0.08);
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ============================================
+   Background image + readability overlay
+   ============================================ */
+
+.bg-image {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(11, 15, 26, 0.88) 0%, rgba(11, 15, 26, 0.78) 45%, rgba(11, 15, 26, 0.92) 100%);
+}
+
+/* ============================================
+   Signature element: floating melody notes
+   ============================================ */
+
+.melody-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.melody-bg .note {
+  position: absolute;
+  bottom: -10%;
+  font-size: 1.6rem;
+  color: var(--cyan);
+  opacity: 0;
+  filter: blur(0.3px);
+  animation: note-float 14s linear infinite;
+  text-shadow: 0 0 12px rgba(0, 217, 255, 0.5);
+  font-family: 'Segoe UI Symbol', 'Apple Color Emoji', 'Noto Music', sans-serif;
+}
+
+.melody-bg .note:nth-child(odd) {
+  color: var(--magenta);
+  text-shadow: 0 0 12px rgba(255, 61, 138, 0.45);
+}
+
+.melody-bg .note:nth-child(1) { left: 6%;  font-size: 1.2rem; animation-duration: 16s; animation-delay: 0s; }
+.melody-bg .note:nth-child(2) { left: 16%; font-size: 2.1rem; animation-duration: 12s; animation-delay: 1.5s; }
+.melody-bg .note:nth-child(3) { left: 26%; font-size: 1.4rem; animation-duration: 18s; animation-delay: 3s; }
+.melody-bg .note:nth-child(4) { left: 38%; font-size: 1.8rem; animation-duration: 13s; animation-delay: 0.8s; }
+.melody-bg .note:nth-child(5) { left: 50%; font-size: 1.3rem; animation-duration: 17s; animation-delay: 4.2s; }
+.melody-bg .note:nth-child(6) { left: 61%; font-size: 2.3rem; animation-duration: 15s; animation-delay: 2s; }
+.melody-bg .note:nth-child(7) { left: 71%; font-size: 1.5rem; animation-duration: 19s; animation-delay: 5s; }
+.melody-bg .note:nth-child(8) { left: 80%; font-size: 1.2rem; animation-duration: 14s; animation-delay: 1s; }
+.melody-bg .note:nth-child(9) { left: 88%; font-size: 1.9rem; animation-duration: 16.5s; animation-delay: 3.6s; }
+.melody-bg .note:nth-child(10) { left: 44%; font-size: 1.1rem; animation-duration: 20s; animation-delay: 6s; }
+.melody-bg .note:nth-child(11) { left: 10%; font-size: 1.7rem; animation-duration: 11s; animation-delay: 2.8s; }
+.melody-bg .note:nth-child(12) { left: 93%; font-size: 1.3rem; animation-duration: 18.5s; animation-delay: 4.8s; }
+
+@keyframes note-float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(-55vh) translateX(20px) rotate(8deg);
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-115vh) translateX(-16px) rotate(-6deg);
+    opacity: 0;
+  }
+}
+
+body.processing .melody-bg .note {
+  animation-duration: 4s;
+  text-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
+}
+
+body.processing .melody-bg .note:nth-child(odd) {
+  text-shadow: 0 0 20px rgba(255, 61, 138, 0.7);
+}
+
+/* ============================================
+   Layout
+   ============================================ */
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 14vh 24px 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+  background: linear-gradient(120deg, var(--text-primary) 40%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin: 0 0 48px;
+  max-width: 380px;
+}
+
+/* ============================================
+   Form
+   ============================================ */
+
+#identify-form {
+  width: 100%;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 6px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-row:focus-within {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.12);
+}
+
+#url-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  padding: 14px 16px;
+}
+
+#url-input::placeholder {
+  color: var(--text-muted);
+}
+
+#submit-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 14px 22px;
+  background: var(--cyan);
+  color: #041018;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+
+#submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 217, 255, 0.3);
+}
+
+#submit-btn:active {
+  transform: translateY(0);
+}
+
+.hint {
+  margin: 14px 4px 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+/* ============================================
+   Loading state
+   ============================================ */
+
+#loading {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.spinner {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 32px;
+}
+
+.spinner span {
+  width: 4px;
+  background: var(--cyan);
+  border-radius: 2px;
+  animation: eq-bounce 0.9s ease-in-out infinite;
+}
+
+.spinner span:nth-child(1) { animation-delay: 0s; }
+.spinner span:nth-child(2) { animation-delay: 0.12s; }
+.spinner span:nth-child(3) { animation-delay: 0.24s; }
+.spinner span:nth-child(4) { animation-delay: 0.36s; }
+.spinner span:nth-child(5) { animation-delay: 0.48s; }
+
+@keyframes eq-bounce {
+  0%, 100% { height: 8px; }
+  50% { height: 30px; }
+}
+
+.mono-status {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ============================================
+   Result / Error
+   ============================================ */
+
+#result, #error {
+  margin-top: 32px;
+  width: 100%;
+  border-radius: 14px;
+  padding: 22px 24px;
+  text-align: left;
+  font-family: var(--font-body);
+}
+
+#result {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(0, 217, 255, 0.25);
+}
+
+#result .song-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+#result .song-artist {
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+#result h2 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+
+#result .song-score {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+#error {
+  background: rgba(255, 61, 138, 0.08);
+  border: 1px solid rgba(255, 61, 138, 0.3);
+  color: #FFB3D0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+/* ============================================
+   Utility
+   ============================================ */
+
+.hidden {
+  display: none !important;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .melody-bg .note,
+  .spinner span {
+    animation: none !important;
+    opacity: 0.15;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-row {
+    flex-direction: column;
+  }
+  #submit-btn {
+    width: 100%;
+  }
+  .container {
+    padding: 10vh 20px 8vh;
+  }
+}

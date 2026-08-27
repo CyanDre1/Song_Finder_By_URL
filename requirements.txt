@@ -1,0 +1,5 @@
+flask
+yt-dlp
+pyacoustid
+python-dotenv
+requests

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Song Finder — Cari Lagu dari URL Video</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="bg-image" style="background-image: url('{{ url_for('static', filename='images/bg-1.png') }}');" aria-hidden="true"></div>
+
+  <div class="melody-bg" aria-hidden="true" id="melody-bg">
+    <span class="note">&#9834;</span>
+    <span class="note">&#9835;</span>
+    <span class="note">&#9833;</span>
+    <span class="note">&#9834;</span>
+    <span class="note">&#9835;</span>
+    <span class="note">&#9833;</span>
+    <span class="note">&#9834;</span>
+    <span class="note">&#9835;</span>
+    <span class="note">&#9833;</span>
+    <span class="note">&#9834;</span>
+    <span class="note">&#9835;</span>
+    <span class="note">&#9833;</span>
+  </div>
+
+  <main class="container">
+    <span class="eyebrow">Analisis Audio &middot; Fingerprint Matching</span>
+    <h1>Song Finder</h1>
+    <p class="subtitle">Tempel URL video, dapatkan judul &amp; artis lagunya.</p>
+
+    <form id="identify-form" autocomplete="off">
+      <div class="input-row">
+        <input
+          type="url"
+          id="url-input"
+          name="url"
+          placeholder="https://www.youtube.com/watch?v=..."
+          required
+        >
+        <button type="submit" id="submit-btn">
+          <span class="btn-label">Identifikasi</span>
+        </button>
+      </div>
+      <p class="hint">Mendukung YouTube, TikTok, Instagram, Facebook, dan lainnya.</p>
+    </form>
+
+    <div id="loading" class="hidden" aria-live="polite">
+      <div class="spinner">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p class="mono-status">Memproses video... bisa memakan waktu beberapa detik.</p>
+    </div>
+
+    <section id="result" class="hidden" aria-live="polite"></section>
+    <section id="error" class="hidden" role="alert"></section>
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
